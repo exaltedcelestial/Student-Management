@@ -181,12 +181,21 @@ describe("Api Controller", () => {
 
     describe("Valid query", () => {
       it("should pass for single common tutor ", async (done) => {
-        const { statusCode, body } = await request(app).get("/api/getcommonsstudents?tutor=tutorken%40gmail.com");
+        const tutor = await db.Tutor.findOne({ where: { email: 't1@gmail.com' } })
+        const newStudents = await db.Student.findAll({
+          where: {
+            email: [
+              's1@gmail.com',
+              's2@gmail.com'
+            ],
+          },
+        });
+        await tutor.addSubscriptions(newStudents.map(s => s.id));
+        const { statusCode, body } = await request(app).get("/api/getcommonsstudents?tutor=t1%40gmail.com");
         const { students } = body;
+        expect(students.length).toEqual(2)
         // expect(details).toEqual([{ tutor: '"tutor" must be a valid email' }])
         expect(statusCode).toEqual(200);
-        done();
-
         done();
       });
 
