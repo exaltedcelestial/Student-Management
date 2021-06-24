@@ -1,5 +1,5 @@
 import db from '../models';
-class FetchStudents {
+class FetchCommonStudents {
   constructor(validatedArgs) {
     Object.assign(this, validatedArgs);
   }
@@ -10,4 +10,4 @@ class FetchStudents {
   }
 }
 
-module.exports = FetchStudents;
+module.exports = FetchCommonStudents;

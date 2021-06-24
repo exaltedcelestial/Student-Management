@@ -70,7 +70,8 @@ describe("Api Controller", () => {
       })
 
       it("should pass for new tutor and students", async (done) => {
-        const studentInfo = ['efg@gmail.com', 'hij@gmail.com'];
+        const studentInfo = ['efg@gmail.com', 'hij@gmail.com']
+          .sort((a, b) => a.localeCompare(b));
         const tutorEmail = 'abcd@gmail.com';
         const { statusCode } = await request(app).post("/api/register").send({
           tutor: tutorEmail,
@@ -86,7 +87,9 @@ describe("Api Controller", () => {
             required: true,
           }
         });
-        const emails = tutor.subscriptions.map(s => s.email);
+        const emails = tutor.subscriptions
+          .map(s => s.email)
+          .sort((a, b) => a.localeCompare(b));
         
         expect(emails).toEqual(studentInfo)
         expect(statusCode).toEqual(204)
@@ -94,7 +97,8 @@ describe("Api Controller", () => {
       });
 
       it("should pass for existing tutor and new students", async (done) => {
-        const studentInfo = ['lmn@gmail.com', 'opq@gmail.com'];
+        const studentInfo = ['lmn@gmail.com', 'opq@gmail.com']
+          .sort((a, b) => a.localeCompare(b));
         const tutorEmail = 't1@gmail.com'; // exists after running seed()
 
         const { statusCode } = await request(app).post("/api/register").send({
@@ -112,7 +116,8 @@ describe("Api Controller", () => {
             required: true,
           }
         });
-        const emails = tutor.subscriptions.map(s => s.email);
+        const emails = tutor.subscriptions.map(s => s.email)
+          .sort((a, b) => a.localeCompare(b));
 
         expect(emails).toEqual(studentInfo)
         expect(statusCode).toEqual(204)
@@ -153,16 +158,35 @@ describe("Api Controller", () => {
   describe("GetCommonStudents API", () => {
     describe("Invalid query", () => {
       it("should fail without tutor ", async (done) => {
+        const { statusCode, body } = await request(app).post("/api/register").send();
+        const { message, details } = body;
+
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" is required' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
 
       it("should fail if tutor is not an email ", async (done) => {
+        const { statusCode, body } = await request(app).post("/api/register").send({
+          tutor: '@gmail.com',
+        });
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" must be a valid email' }])
+        expect(statusCode).toEqual(400);
         done();
       });
     });
 
     describe("Valid query", () => {
       it("should pass for single common tutor ", async (done) => {
+        const { statusCode, body } = await request(app).get("/api/getcommonsstudents?tutor=tutorken%40gmail.com");
+        const { students } = body;
+        // expect(details).toEqual([{ tutor: '"tutor" must be a valid email' }])
+        expect(statusCode).toEqual(200);
+        done();
+
         done();
       });
 

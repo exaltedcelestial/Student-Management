@@ -1,6 +1,6 @@
 import { successResponse, errorResponse } from "../helpers";
 import RegisterStudents from "../services/RegisterStudents";
-import FetchStudents from "../services/FetchStudents";
+import FetchCommonStudents from "../services/FetchCommonStudents";
 
 export const register = async (req, res) => {
   try {
@@ -15,10 +15,11 @@ export const register = async (req, res) => {
 export const fetchStudents = async (req, res) => {
   try {
     const { query = {} } = req;
-    const { emails } = query;
-    const service = new FetchStudents({ students: emails?.split(/\s*,\s*/) });
-    const students = await service.call();
-    return successResponse(req, res, students, 200);
+    const { tutor } = query;
+    console.log(tutor)
+    // const service = new FetchCommonStudents({ students: tutor?.split(/\s*,\s*/) });
+    // const students = await service.call();
+    return successResponse(req, res, {}, 200);
   } catch (error) {
     console.log(error)
     return errorResponse(req, res, error.message);
