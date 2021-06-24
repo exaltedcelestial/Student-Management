@@ -1,4 +1,5 @@
 require("@babel/register");
+require("./setupDotenv");
 const app = require("./app");
 
 const setUpExpress = () => {

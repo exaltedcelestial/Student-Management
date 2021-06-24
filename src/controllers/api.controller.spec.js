@@ -2,12 +2,19 @@ require("mysql2/node_modules/iconv-lite").encodingExists("foo");
 
 const request = require("supertest");
 const app = require("../testEntry");
+const db = require("../models");
+const seed = require("../seeders/seed");
 const faker = require("faker");
 
 const { truncate } = require("../testHelper");
 
 const { fake } = require("faker");
 
+const reset = async () => {
+  await db.sequelize.drop()
+  await db.sequelize.sync()
+  await seed();
+}
 describe("Api Controller", () => {
   describe("Register API", () => {
     describe("Invalid body", () => {
@@ -22,28 +29,119 @@ describe("Api Controller", () => {
       });
 
       it("should fail without students ", async (done) => {
+        const { statusCode, body } = await request(app).post("/api/register").send({
+          tutor: 't1@gmail.com',
+          students: [],
+        });
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ students: '"students" must contain at least 1 items' }])
+        expect(statusCode).toEqual(400);
         done();
       });
 
       it("should fail if tutor is not an email", async (done) => {
+        const { statusCode, body } = await request(app).post("/api/register").send({
+          tutor: '@gmail.com',
+        });
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" must be a valid email' }])
+        expect(statusCode).toEqual(400);
         done();
       });
 
       it("should fail if students are not in email format", async (done) => {
+        const { statusCode, body } = await request(app).post("/api/register").send({
+          tutor: 't1@gmail.com',
+          students: ['@gmail.com', '@gmail.com']
+        });
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ 0: '"students[0]" must be a valid email' }])
+        expect(statusCode).toEqual(400);
         done();
       });
     });
 
     describe("Valid body", () => {
+      beforeEach(async () => {
+        await reset();
+      })
+
       it("should pass for new tutor and students", async (done) => {
+        const studentInfo = ['efg@gmail.com', 'hij@gmail.com'];
+        const tutorEmail = 'abcd@gmail.com';
+        const { statusCode } = await request(app).post("/api/register").send({
+          tutor: tutorEmail,
+          students: studentInfo,
+        }).catch(e => console.log(e));
+        const tutor = await db.Tutor.findOne({
+          where: {
+            email: tutorEmail,
+          },
+          include: {
+            model: db.Student,
+            as: 'subscriptions',
+            required: true,
+          }
+        });
+        const emails = tutor.subscriptions.map(s => s.email);
+        
+        expect(emails).toEqual(studentInfo)
+        expect(statusCode).toEqual(204)
         done();
       });
 
       it("should pass for existing tutor and new students", async (done) => {
+        const studentInfo = ['lmn@gmail.com', 'opq@gmail.com'];
+        const tutorEmail = 't1@gmail.com'; // exists after running seed()
+
+        const { statusCode } = await request(app).post("/api/register").send({
+          tutor: tutorEmail,
+          students: studentInfo,
+        });
+
+        const tutor = await db.Tutor.findOne({
+          where: {
+            email: tutorEmail,
+          },
+          include: {
+            model: db.Student,
+            as: 'subscriptions',
+            required: true,
+          }
+        });
+        const emails = tutor.subscriptions.map(s => s.email);
+
+        expect(emails).toEqual(studentInfo)
+        expect(statusCode).toEqual(204)
         done();
       });
 
       it("should pass for new tutor and old students", async (done) => {
+        const studentInfo = ['s1@gmail.com', 's2@gmail.com']; // exists after running seed()
+        const tutorEmail = 'rst@gmail.com';
+
+        const { statusCode } = await request(app).post("/api/register").send({
+          tutor: tutorEmail,
+          students: studentInfo,
+        });
+
+        const tutor = await db.Tutor.findOne({
+          where: {
+            email: tutorEmail,
+          },
+          include: {
+            model: db.Student,
+            as: 'subscriptions',
+            required: true,
+          }
+        });
+        const emails = tutor.subscriptions.map(s => s.email);
+
+        expect(emails).toEqual(studentInfo)
+        expect(statusCode).toEqual(204)
         done();
       });
     });

@@ -1,6 +1,8 @@
 const { Model } = require("sequelize");
+const { v4: uuidv4 } = require('uuid');
+
 module.exports = (sequelize, DataTypes) => {
-  class Tutor extends Model {
+  class Student extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,28 +11,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // this.belongsToMany(models.Student, { through: "Tutors_Students" });
-      this.belongsToMany(models.Student, { as: 'subscriptions', through: "Subscription", });
-      this.belongsToMany(models.Student, { as: 'suspensions', through: "Suspension" });
-    }
-
-    constructor(doc) {
-      super(doc);
-      Object.assign(this, doc);
+      this.belongsToMany(models.Tutor, { as: 'subscriptions', through: "Subscription", });
+      this.belongsToMany(models.Tutor, { as: 'suspensions', through: "Suspension" });
     }
   }
-  Tutor.init(
+  Student.init(
     {
       email: {
         type: DataTypes.STRING,
         validate: {
           isEmail: true,
         },
+        unique: true,
+        allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Tutor",
+      modelName: "Student",
     }
   );
-  return Tutor;
+  return Student;
 };
