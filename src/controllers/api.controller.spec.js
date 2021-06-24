@@ -120,7 +120,8 @@ describe("Api Controller", () => {
       });
 
       it("should pass for new tutor and old students", async (done) => {
-        const studentInfo = ['s1@gmail.com', 's2@gmail.com']; // exists after running seed()
+        const studentInfo = ['s1@gmail.com', 's2@gmail.com']
+          .sort((a, b) => a.localeCompare(b)); // exists after running seed()
         const tutorEmail = 'rst@gmail.com';
 
         const { statusCode } = await request(app).post("/api/register").send({
@@ -138,7 +139,9 @@ describe("Api Controller", () => {
             required: true,
           }
         });
-        const emails = tutor.subscriptions.map(s => s.email);
+        const emails = tutor.subscriptions
+          .map(s => s.email)
+          .sort((a, b) => a.localeCompare(b));
 
         expect(emails).toEqual(studentInfo)
         expect(statusCode).toEqual(204)
