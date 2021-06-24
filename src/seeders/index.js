@@ -1,7 +1,15 @@
-import {register} from '../controllers/api.controller';
+require("../setupDotenv");
 const seed = require("./seed");
 
 ((async () => {
-  await seed();
-  process.exit();
+  try {
+    await seed();
+    console.log('==========================================')
+    console.log('Finished Populating Database');
+    console.log('==========================================')
+  } catch (error) {
+    console.log(error)    
+  } finally {
+    process.exit();
+  }
 })())

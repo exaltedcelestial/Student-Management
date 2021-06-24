@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: true,
         },
+        unique: true,
+        allowNull: false,
       },
     },
     {
