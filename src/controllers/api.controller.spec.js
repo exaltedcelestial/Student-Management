@@ -75,7 +75,7 @@ describe("Api Controller", () => {
         const { statusCode } = await request(app).post("/api/register").send({
           tutor: tutorEmail,
           students: studentInfo,
-        }).catch(e => console.log(e));
+        });
         const tutor = await db.Tutor.findOne({
           where: {
             email: tutorEmail,
@@ -228,13 +228,11 @@ describe("Api Controller", () => {
       })
 
       it("should pass for existing student", async (done) => {
-        const student = 'xyz@gmail.com';
-        const { statusCode, body } = await request(app).post("/api/suspend").send({
+        const student = 's1@gmail.com';
+        const { statusCode } = await request(app).post("/api/suspend").send({
           student,
         });
-        const { message } = body;
-        expect(statusCode).toEqual(500)
-        expect(message).toEqual('Student does not exist');
+        expect(statusCode).toEqual(204)
         done();
       });
     });
@@ -302,14 +300,31 @@ describe("Api Controller", () => {
         tutor: 't1@gmail.com',
         notification: 'Hi there @s3@gmail.com @s4@gmail.com',
       });
-      const { recipients, message } = body;
-      console.log(recipients)
+      const { recipients } = body;
       expect(statusCode).toEqual(200)
       expect(recipients.length).toEqual(2)
       done();
     });
 
     it("should pass and retrieve students that are not suspended only", async (done) => {
+      const { statusCode: registerStatusCode1 } = await request(app).post("/api/register").send({
+        tutor: 't1@gmail.com',
+        students: ['s1@gmail.com','s2@gmail.com'],
+      });
+      const { statusCode: suspensionCode } = await request(app).post("/api/suspend").send({
+        student: 's1@gmail.com',
+      });
+
+      const { statusCode, body } = await request(app).post("/api/retrievenotifications").send({
+        tutor: 't1@gmail.com',
+        notification: 'Hello Everyone',
+      });
+      const { recipients } = body;
+
+      expect(registerStatusCode1).toEqual(204)
+      expect(suspensionCode).toEqual(204)
+      expect(statusCode).toEqual(200)
+      expect(recipients.length).toEqual(1)
       done();
     });
   });

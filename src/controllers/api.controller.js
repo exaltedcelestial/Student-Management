@@ -27,8 +27,8 @@ export const fetchStudents = async (req, res) => {
 export const suspendStudent = async (req, res) => {
   try {
     const service = new SuspendStudent(req.body);
-    const students = await service.call();
-    return successResponse(req, res, { students }, 204);
+    await service.call();
+    return successResponse(req, res, {}, 204);
   } catch (error) {
     return errorResponse(req, res, error.message);
   }
