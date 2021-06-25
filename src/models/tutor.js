@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // this.belongsToMany(models.Student, { through: "Tutors_Students" });
       this.belongsToMany(models.Student, { as: 'subscriptions', through: "Subscription", });
-      this.belongsToMany(models.Student, { as: 'suspensions', through: "Suspension" });
     }
 
     constructor(doc) {

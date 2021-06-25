@@ -42,16 +42,6 @@ class RegisterStudents {
       const tutor = await regTutor();
       const students = await regStudents();
       await associate(tutor, students)
-      // const t = await Tutor.findAll({
-      //   where: {
-      //     email: tutor.email,
-      //   },
-      //   include: {
-      //     model: db.Student,
-      //     as: 'subscriptions',
-      //     required: true,
-      //   },
-      // })
       return { success: true }
     }).catch(e => console.log(e));
   }

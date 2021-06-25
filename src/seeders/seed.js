@@ -17,16 +17,14 @@ const seed = () => {
   ];
 
   return db.sequelize.transaction(async (transaction) => {
-    const tutors = await Promise.all(tutorInfo.map(async (tutor) => {
-      return Tutor.create(tutor, {
-        ignoreDuplicates: true,
-      });
-    }));
-    const students = await Promise.all(studentInfo.map(async (student) => {
-      return Student.create(student, {
-        ignoreDuplicates: true,
-      });
-    }));
+    const tutors = await Tutor.bulkCreate(tutorInfo, {
+      ignoreDuplicates: true,
+      transaction,
+    })
+    const students = await Student.bulkCreate(studentInfo, {
+      ignoreDuplicates: true,
+      transaction,
+    })
   
     return {
       tutors,

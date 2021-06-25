@@ -1,5 +1,4 @@
 const { Model } = require("sequelize");
-const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
   class Student extends Model {
@@ -12,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // this.belongsToMany(models.Student, { through: "Tutors_Students" });
       this.belongsToMany(models.Tutor, { as: 'subscriptions', through: "Subscription", });
-      this.belongsToMany(models.Tutor, { as: 'suspensions', through: "Suspension" });
     }
   }
   Student.init(
@@ -25,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
+      suspensionDate: {
+        type: DataTypes.DATE,
+        defaultValue: null,
+      }
     },
     {
       sequelize,

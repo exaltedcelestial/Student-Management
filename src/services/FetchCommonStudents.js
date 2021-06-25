@@ -4,9 +4,28 @@ class FetchCommonStudents {
     Object.assign(this, validatedArgs);
   }
 
+  get tutorArr() {
+    if (Array.isArray(this.tutor)) return this.tutor;
+    return [this.tutor];
+  }
+
   async call() {
-    const { Student, Tutor, Op } = db;
-    return Student.findAll()
+    const { Tutor, Student } = db;
+    const tutors = await Tutor.findAll({
+      where: {
+        email: this.tutorArr,
+      },
+      include: {
+        model: Student,
+        as: 'subscriptions',
+        required: true,
+      },
+    })
+    const students = tutors.reduce((mem, curr) => {
+      const { subscriptions } = curr;
+      return mem.concat(subscriptions.map(s => s.email))
+    }, []);
+    return students;
   }
 }
 

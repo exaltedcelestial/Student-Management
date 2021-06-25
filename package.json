@@ -10,6 +10,7 @@
     "db:create": "npx sequelize-cli db:create",
     "seed": "node src/seeders/index.js",
     "db:migrate": "npx sequelize-cli db:migrate",
+    "reset": "npx sequelize-cli db:drop && npm run db:create && npm run db:sync && npm run seed",
     "test": "jest --testTimeout=30000  --watchAll --runInBand ",
     "pretest": "cross-env NODE_ENV=test npm run db:sync:test",
     "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
