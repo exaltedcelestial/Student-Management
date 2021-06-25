@@ -6,6 +6,8 @@ const filebasename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
 
 const config = require(path.resolve('src', path.join('config', 'config.js')))[env];
+console.log('config:', config)
+console.log('env:', process.env.NODE_ENV)
 const db = {};
 
 let sequelize;
