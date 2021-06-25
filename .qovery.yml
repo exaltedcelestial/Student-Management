@@ -1,0 +1,15 @@
+---
+application:
+  name: "student-management-backend-boilerplate"
+  project: "student-management-backend"
+  organization: "QoveryCommunity"
+databases:
+- type: "MYSQL"
+  name: "production-student-management"
+  version: "8.0"
+routers:
+- name: "main-student-management-backend-boilerplate"
+  routes:
+  - application_name: "student-management-backend-boilerplate"
+    paths:
+    - "/*"
