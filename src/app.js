@@ -7,9 +7,8 @@ import apiRoutes from "./routes/api";
 const app = express();
 const port = process.env.APP_PORT || 3000;
 const appURL = `http://localhost:${port}`;
-const whiteList = [process.env.FRONTEND_URL, appURL]
-console.log('appURL:', appURL);
-
+const defaultFrontendURL = 'http://localhost:9001'
+const whiteList = [process.env.FRONTEND_URL.toString() || defaultFrontendURL, appURL]
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
