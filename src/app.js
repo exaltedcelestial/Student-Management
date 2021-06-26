@@ -5,13 +5,17 @@ import morgan from 'morgan';
 import apiRoutes from "./routes/api";
 
 const app = express();
-const whiteList = [process.env.FRONTEND_URL]
+const port = process.env.APP_PORT || 3000;
+const appURL = `http://localhost:${port}`;
+const whiteList = [process.env.FRONTEND_URL, appURL]
+console.log('appURL:', appURL);
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: (origin, callback) => {
-    if (whiteList.includes(origin)) {
+    if (whiteList.includes(origin) || !origin) {
       callback(null, true)
     } else {
       callback(new Error())
