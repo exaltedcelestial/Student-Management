@@ -3,7 +3,7 @@
 ## Setup
 
 ### Add .env new variable
-**FRONTEND_URL** is the new addition to the .env file.
+**FRONTEND_URL** is the new addition to the .env file, all could be found in .env.sample aside from frontend url.
 It's the url of the frontend that would be whitelisted in cors. By default, frontend runs on port 9001.
 
 ```
@@ -66,6 +66,21 @@ This runs our express app:
 ```
 
 ### Tests
+Before running the script, add your .env.test
+```
+  APP_PORT=4000
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASS=password
+  DB_NAME=development-student-management
+  DB_DIALECT=mysql
+  DB_PORT=3306
+  APP_HOST=localhost
+  NODE_ENV=development
+  FRONTEND_URL=http:localhost:9001
+```
+
+**Running the test cases**
 ```javascript
   npm run test
 ```
