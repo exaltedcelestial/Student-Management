@@ -66,6 +66,21 @@ This runs our express app:
 ```
 
 ### Tests
+Before running the script, add your .env.test
+```
+  APP_PORT=4000
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASS=password
+  DB_NAME=development-student-management
+  DB_DIALECT=mysql
+  DB_PORT=3306
+  APP_HOST=localhost
+  NODE_ENV=development
+  FRONTEND_URL=http:localhost:9001
+```
+
+**Running the test cases**
 ```javascript
   npm run test
 ```
