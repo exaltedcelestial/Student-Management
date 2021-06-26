@@ -17,8 +17,7 @@ class SuspendStudent {
     if (!student) throw new Error('Student does not exist');
     if (!student.suspensionDate) {
       student.suspensionDate = new Date();
-      const s = await student.save();
-      return s.toJSON();
+      await student.save();
     }
     return student;
   }

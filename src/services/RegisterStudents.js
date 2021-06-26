@@ -36,7 +36,7 @@ class RegisterStudents {
 
     return Student.findAll({
       where: {
-        email: students.map(t => t.email),
+        email: students.map(s => s.email),
       },
     });
   }
