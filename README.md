@@ -5,6 +5,7 @@
 ### Add .env new variable
 **FRONTEND_URL** is the new addition to the .env file, all could be found in .env.sample aside from frontend url.
 It's the url of the frontend that would be whitelisted in cors. By default, frontend runs on port 9001.
+
 ---
 **NOTE**
 
