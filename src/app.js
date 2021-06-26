@@ -3,10 +3,21 @@ import cors from "cors";
 import { ValidationError } from "express-validation";
 import morgan from 'morgan';
 import apiRoutes from "./routes/api";
+
 const app = express();
+const whiteList = [process.env.FRONTEND_URL]
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (whiteList.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error())
+    }
+  }
+}))
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
