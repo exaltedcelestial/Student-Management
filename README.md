@@ -77,7 +77,7 @@ Before running the script, add your .env.test
   DB_PORT=3306
   APP_HOST=localhost
   NODE_ENV=development
-  FRONTEND_URL=http:localhost:9001
+  FRONTEND_URL=http://localhost:9001
 ```
 
 **Running the test cases**
