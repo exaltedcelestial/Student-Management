@@ -89,7 +89,7 @@ Before running the script, add your .env.test
 **NOTE**
 
   __FRONTEND_URL__ variable is needed for cors whitelisting.
-  __FRONTEND_URL__ is ```http://localhost:9001``` by default. Unless there's a different port set for frontend.
+  __FRONTEND_URL__ is ```http://localhost:9001``` by default, unless there's a different port set for frontend.
 
 ---
 
