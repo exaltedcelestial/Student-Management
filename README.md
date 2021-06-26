@@ -5,7 +5,12 @@
 ### Add .env new variable
 **FRONTEND_URL** is the new addition to the .env file, all could be found in .env.sample aside from frontend url.
 It's the url of the frontend that would be whitelisted in cors. By default, frontend runs on port 9001.
+---
+**NOTE**
 
+  __FRONTEND_URL__ variable is needed for cors whitelisting.
+
+---
 ```
   APP_PORT=4000
   DB_HOST=localhost
@@ -83,6 +88,7 @@ Before running the script, add your .env.test
 ---
 **NOTE**
 
+  __FRONTEND_URL__ variable is needed for cors whitelisting.
   __FRONTEND_URL__ is ```http://localhost:9001``` by default. Unless there's a different port set for frontend.
 
 ---
