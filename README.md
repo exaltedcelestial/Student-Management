@@ -2,30 +2,70 @@
 
 ## Setup
 
-### Create Database
-We need to create our database first to create tables, so we need to run the command:
+### Add .env new variable
+**FRONTEND_URL** is the new addition to the .env file.
+It's the url of the frontend that would be whitelisted in cors. By default, frontend runs on port 9001.
 
-```javascript
-npm run db:create
+```
+  APP_PORT=4000
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASS=password
+  DB_NAME=development-student-management
+  DB_DIALECT=mysql
+  DB_PORT=3306
+  APP_HOST=localhost
+  NODE_ENV=development
+  FRONTEND_URL=http:localhost:9001
 ```
 
-### Create Tables
-For this one, I opted to use the models instead of the migration files. To do this, we run:
-
+### Install dependencies
 ```javascript
-npm run db:sync
+  npm i
 ```
+
+### Drop and create new db
+This drops the existing db and creates a new one from the Models instead of migrations.
+```
+  npm run reset
+```
+
+### Seed
+Insert initial data to db.
+
+**script**:
+```javascript
+  npm run seed
+```
+
+**data inserted**:
+```
+  Students
+    s1@gmail.com
+    s2@gmail.com
+    s3@gmail.com
+    s4@gmail.com
+    s5@gmail.com
+    s6@gmail.com
+  
+  Tutors
+    t1@gmail.com
+    t2@gmail.com
+    t3@gmail.com
+```
+
 
 ## Running the app
+
 
 ### Rest API
 This runs our express app:
 
 ```javascript
-npm run dev
+  npm run dev
 ```
 
 ### Tests
 ```javascript
-npm run test
+  npm run test
 ```
