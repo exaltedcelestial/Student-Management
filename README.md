@@ -80,6 +80,13 @@ Before running the script, add your .env.test
   FRONTEND_URL=http://localhost:9001
 ```
 
+---
+**NOTE**
+
+  __FRONTEND_URL__ is ```http://localhost:9001``` by default. Unless there's a different port set for frontend.
+
+---
+
 **Running the test cases**
 ```javascript
   npm run test
