@@ -16,7 +16,7 @@ It's the url of the frontend that would be whitelisted in cors. By default, fron
   DB_PORT=3306
   APP_HOST=localhost
   NODE_ENV=development
-  FRONTEND_URL=http:localhost:9001
+  FRONTEND_URL=http://localhost:9001
 ```
 
 ### Install dependencies
